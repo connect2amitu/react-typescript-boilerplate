@@ -1,7 +1,7 @@
 import { NavLink, useNavigate } from 'react-router-dom'
 import { useAppState } from '../context';
 
-export const Header = () => {
+const Header = () => {
   const { isLoggedIn, logout } = useAppState("auth");
   const { changeLanguage, lang } = useAppState("global");
 
@@ -31,3 +31,5 @@ export const Header = () => {
     </div>
   )
 }
+
+export default Header

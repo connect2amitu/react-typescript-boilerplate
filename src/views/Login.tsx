@@ -1,28 +1,22 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useForm, Controller } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
-import * as Yup from 'yup';
 
 import { useAppState } from "../context";
-import Error from "../components/Error";
-
-const validationSchema = Yup.object().shape({
-  username: Yup.string()
-    .required('Username is required'),
-  password: Yup.string()
-    .required('Password is required')
-});
+import { Button, Error, TextBox } from "../components";
+import { LoginFormSchema } from "../validations";
+import { checkLogin } from "../shared/functions";
 
 const Login = () => {
   const { isLoggedIn, setLoginUser } = useAppState("auth");
 
   const navigate = useNavigate();
 
-  const { handleSubmit, formState: { errors }, control } = useForm({
+  const { handleSubmit, setError, formState: { errors }, control } = useForm({
     mode: "all",
     reValidateMode: "onChange",
-    resolver: yupResolver(validationSchema)
+    resolver: yupResolver(LoginFormSchema)
   });
 
   useEffect(() => {
@@ -33,7 +27,11 @@ const Login = () => {
 
   const onSubmit = (data: any) => {
     // Login check Login will be here
-    setLoginUser()
+    if (checkLogin(data)) {
+      setLoginUser()
+    } else {
+      setError('invalidInput', { type: 'custom', message: 'Invalid Username and Password input' });
+    }
   }
 
   return (
@@ -41,31 +39,31 @@ const Login = () => {
       <h1> Login </h1>
       <form onSubmit={handleSubmit(onSubmit)}>
 
+        <div>
+          <Error name="invalidInput" errors={errors} />
+        </div>
+
         {/* UserName */}
         <div>
-          <label>Username</label>
-          <Controller
-            render={({ field }) => <input {...field} type={"text"} autoComplete="off" placeholder=" " />}
-            name={"username"}
+          <TextBox
+            label="Username"
+            name="username"
             control={control}
-            defaultValue=""
+            errors={errors}
           />
-          <Error name="username" errors={errors} />
         </div>
 
         {/* Password */}
         <div>
-          <label>Password</label>
-          <Controller
-            render={({ field }) => <input {...field} type={"password"} autoComplete="off" placeholder=" " />}
-            name={"password"}
+          <TextBox
+            label="Password"
+            name="password"
             control={control}
-            defaultValue=""
+            errors={errors}
           />
-          <Error name="password" errors={errors} />
         </div>
 
-        <button>Login</button>
+        <Button type="submit">Login</Button>
       </form>
     </div>
   )

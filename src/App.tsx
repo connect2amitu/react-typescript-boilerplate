@@ -1,10 +1,9 @@
 import { AppStateProvider } from './context';
 import { BrowserRouter, } from "react-router-dom";
 
-import containers from './state';
-
-import Routing from './Routing';
-import { Header } from './components/Header';
+import containers from './context/state';
+import { Header } from './components';
+import Routing from './routing';
 
 function App() {
   return (
