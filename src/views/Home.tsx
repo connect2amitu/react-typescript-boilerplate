@@ -1,21 +1,21 @@
+
+import { useTranslation } from "react-i18next";
 import { useAppState } from "../context"
 
-const Dashboard = () => {
+const Home = () => {
   const { isDarkTheme, toggleTheme } = useAppState("global");
-  const { isLoggedIn } = useAppState("auth");
+  const { t } = useTranslation();
 
   return (
     <div>
-      <h1>Dashboard</h1>
+      <h1>{t('home.title')}</h1>
       <div>
+        <h6>{t('home.heading')}</h6>
         <p>{isDarkTheme}</p>
         <button onClick={toggleTheme}>Toggle Theme</button>
-        <br />
-        <br />
-        <p>{isLoggedIn ? "LoggedIn" : "Not LoggedIn"}</p>
       </div>
     </div>
   )
 }
 
-export default Dashboard
+export default Home

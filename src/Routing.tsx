@@ -1,9 +1,13 @@
 import { Navigate, useRoutes } from 'react-router-dom';
+
 import { useAppState } from './context';
+
+// Pages
 import About from './views/About';
-import Dashboard from './views/Dashboard';
+import Dashboard from './views/Home';
 import Login from './views/Login';
 import SecuredPage from './views/SecuredPage';
+import UnAuthorizedAccess from './views/UnAuthorizedAccess';
 
 const Routing = () => {
   const routes = useRoutes([
@@ -22,26 +26,22 @@ const Routing = () => {
       </PrivateRoute>
     },
     {
+      path: 'unauthorized',
+      element: <UnAuthorizedAccess />,
+    },
+    {
       path: 'about',
       element: <About />,
-      children: [
-        {
-          path: '',
-          element: <div>About Index</div>
-        },
-        {
-          path: ':id',
-          element: <div>About us Details</div>
-        }]
     }
   ]);
+
   return routes;
 }
 
 export const PrivateRoute = ({ children, }: { children: any }) => {
   const { isLoggedIn } = useAppState("auth");
 
-  return isLoggedIn ? children : <Navigate to="/login" />;
+  return isLoggedIn ? children : <Navigate to="/unauthorized" />;
 }
 
 

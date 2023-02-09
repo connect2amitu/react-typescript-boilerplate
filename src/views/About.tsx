@@ -1,23 +1,12 @@
-import { NavLink, Outlet } from "react-router-dom";
-import { useAppState } from "../context";
+import { useTranslation } from "react-i18next";
 
 const About = () => {
-  const { isLoggedIn, setLoginUser, logout } = useAppState("auth");
+  const { t } = useTranslation();
 
   return (
     <div>
-      <h1>About us</h1>
-      {isLoggedIn ?
-        <button onClick={logout}>Logout</button>
-        :
-        <button onClick={setLoginUser}>Set Login User</button>
-      }
-
-      <div>This is the About us page</div>
-      <NavLink to="/about">First Page</NavLink>&nbsp;&nbsp;
-      <NavLink to="/about/1">Detail</NavLink>
-      <h1>Page Content</h1>
-      <Outlet />
+      <h1>{t('about.title')}</h1>
+      <h6>{t('about.heading')}</h6>
     </div>
   )
 }
